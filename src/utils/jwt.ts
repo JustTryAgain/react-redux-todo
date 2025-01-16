@@ -1,7 +1,8 @@
 import { jwtDecrypt, JWTPayload, SignJWT } from "jose";
 
 const secretKey = new TextEncoder().encode("my-very-secret-key");
-const expiresIn = "10min";
+// min
+export const expiresIn = 10;
 
 export async function createJWT(payload: JWTPayload) {
   if (!payload.userId) {
@@ -11,7 +12,7 @@ export async function createJWT(payload: JWTPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime(expiresIn)
+    .setExpirationTime(new Date(Date.now() + expiresIn * 60 * 1000))
     .sign(secretKey);
 }
 
