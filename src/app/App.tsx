@@ -1,22 +1,29 @@
-import "./App.css";
-import { useEffect } from "react";
-import { useAppDispatch } from "./hooks.ts";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "./store.ts";
-import { auth } from "../features/authentication/authenticationSlice.ts";
+import styles from "./App.module.css";
+import { useAppDispatch } from "./hooks.ts";
+import { auth, selectIsAuth } from "../features/authentication/authenticationSlice.ts";
+import Header from "../components/Header/Header.tsx";
 
-function App() {
+const App: React.FC = () =>  {
   const dispatch = useAppDispatch();
-  const authState = useSelector((state: RootState) => state.auth);
+  const isAuth = useSelector(selectIsAuth);
 
-  useEffect(()=>{
+  console.log("render");
+
+  useEffect(() => {
     dispatch(auth());
   }, [dispatch]);
 
+  // const setAuthHandler = () => {
+  //   console.log("clicked");
+  // };
+
   return (
-      <div className="container">
-        {authState.isAuth ? "Logged In" : "Logged Out"}
-      </div>
+    <div className={styles.container}>
+      <Header/>
+        {isAuth ? "Logged In" : "Logged Out"}
+    </div>
   );
 }
 
